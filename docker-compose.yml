@@ -1,23 +1,47 @@
-version: '3.7'
+version: '3.9'
 services:
-  web:
-    image: php:8.1-apache
-    container_name: php-apache
-    ports:
-      - "80:80"
+
+  frontend:
+    build: frontend/.
+    restart: always
     volumes:
-      - ./:/var/www/html
+      - ./frontend/dist:/usr/share/nginx/html
     networks:
-      vpc1:
+      vpc:
         ipv4_address: 10.0.0.2
+    ports:
+      - '80:80'
+
+  api:
+    build: api/.
+    restart: always
+    volumes:
+      - ./api:/usr/share/nginx/html
+    networks:
+      vpc:
+        ipv4_address: 10.0.0.3
+    ports:
+      - '8080:8080'
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    container_name: mysql
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rijbclxeuqddrdoi
+      MYSQL_DATABASE: default
+    networks:
+      vpc:
+        ipv4_address: 10.0.0.4
+    ports:
+     - "3306:3306"
 
 networks:
-  vpc1:
+  vpc:
     driver: bridge
     ipam:
      config:
-      - subnet: 10.0.0.0/16
-        gateway: 10.0.0.1
-
-
-
+       - subnet: 10.0.0.0/16
+         gateway: 10.0.0.1
