@@ -1,47 +1,31 @@
 version: '3.9'
 services:
-
   frontend:
     build: frontend/.
+    image: wevertoncampos/frontend:latest
+    container_name: frontend
     restart: always
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
-    networks:
-      vpc:
-        ipv4_address: 10.0.0.2
     ports:
       - '80:80'
 
   api:
     build: api/.
+    image: wevertoncampos/backend:latest
+    container_name: backend
     restart: always
     volumes:
       - ./api:/usr/share/nginx/html
-    networks:
-      vpc:
-        ipv4_address: 10.0.0.3
     ports:
       - '8080:8080'
 
   mysql:
-    image: mysql:latest
-    restart: always
+    build: .
+    image: wevertoncampos/mysql:latest
     container_name: mysql
+    restart: always
     volumes:
       - ./dbdata:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rijbclxeuqddrdoi
-      MYSQL_DATABASE: default
-    networks:
-      vpc:
-        ipv4_address: 10.0.0.4
     ports:
-     - "3306:3306"
-
-networks:
-  vpc:
-    driver: bridge
-    ipam:
-     config:
-       - subnet: 10.0.0.0/16
-         gateway: 10.0.0.1
+      - '3306:3306'

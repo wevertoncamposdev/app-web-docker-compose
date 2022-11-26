@@ -1,18 +1,20 @@
 <template>
-  <TheHeader />
-  <AllUsers />
+  <MyHeader />
+  <NewComponents />
+  <AccessApi />
 </template>
 
 <script>
-import TheHeader from './components/TheHeader.vue'
-import AllUsers from './components/AllUsers.vue';
+import MyHeader from './components/MyHeader.vue';
+import NewComponents from './components/NewComponents.vue';
+import AccessApi from './components/AccessApi.vue';
 
 export default {
   name: 'App',
   components: {
-    TheHeader,
-    AllUsers
-
+    MyHeader,
+    NewComponents,
+    AccessApi
   },
 }
 </script>
